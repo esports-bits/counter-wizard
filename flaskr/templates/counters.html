@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ champ_name }} counters</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4-4.1.1/dt-1.10.18/datatables.min.css"/>
+</head>
+<body>
+<div class="container mt-5">
+
+<div class="row p-2">
+    <div class="d-inline">
+        <img src="https://cdn.communitydragon.org/{{ patch }}/profile-icon/{{ icon_id }}"
+             class="float-left rounded-circle shadow p-2 bg-white rounded" height="150" width="150">
+    </div>
+    <div class="d-inline my-auto p-4">
+        <p class="h1 align-middle display-2">Hello <strong>{{ summoner_name }}!</strong></p>
+    </div>
+</div>
+
+<div class="row p-2">
+    <p class="h2 pt-2">Here are your counters for <strong>{{ champ_name }}</strong>
+        (<img class="rounded-circle align-middle"
+              src="https://cdn.communitydragon.org/{{ patch }}/champion/{{ champ_id | int }}/square"
+              height="30" width="30">)
+        in <strong>{{ position }}</strong>
+        (<img class="align-middle"
+              src="https://raw.githubusercontent.com/esports-bits/lol_images/master/role_lane_icons/{{ position.upper() }}.png"
+              height="30" width="30">).
+    </p>
+    <table class="table table-striped" id="counters_table">
+        <caption>Only matchups with more than 100 games and 47% winrate are shown.</caption>
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col" class="align-middle text-center">#</th>
+                <th scope="col" class="align-middle text-center">Champion</th>
+                <th scope="col" class="align-middle text-center">Name</th>
+                <th scope="col" class="align-middle text-center" rel="tooltip" data-toggle="tooltip"
+                    data-placement="bottom" style="cursor: pointer;"
+                    title="This is the result of averaging Winrate + Mastery points + Mastery Level.
+                    All values previously scaled from 0 to 1.">Relevance</th>
+                <th scope="col" class="align-middle text-center">Winrate</th>
+                <th scope="col" class="align-middle text-center">Games</th>
+                <th scope="col" class="align-middle text-center">Mastery points</th>
+                <th scope="col" class="align-middle text-center">Mastery level</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for i, champ in counter_champs %}
+        <tr>
+            <td class="align-middle text-center">{{ i + 1 }}</td>
+            <td class="align-middle text-center">
+                <a href="https://champion.gg/champion/{{ champ.name }}/{{ position.lower() }}" target="_blank">
+                    <img class="rounded"
+                         src="https://cdn.communitydragon.org/{{ patch }}/champion/{{ champ.champ_id | int }}/square"
+                         height="60" width="60">
+                </a>
+            </td>
+            <td class="align-middle text-center">{{ champ.name }}</td>
+            <td class="align-middle text-center">{{ '{0:0.2f}'.format(champ.relevance) }}</td>
+            <td class="align-middle text-center">{{ '{0:0.2f} %'.format(champ.winrate * 100) }}</td>
+            <td class="align-middle text-center">{{ champ.games | int }}</td>
+            <td class="align-middle text-center">{{ champ.championPoints | int }}</td>
+            <td class="align-middle text-center">{{ champ.championLevel | int }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<script type="text/javascript">
+    $(function () {
+        $("[rel='tooltip']").tooltip();
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        $('#counters_table').DataTable();
+    });
+</script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs4-4.1.1/dt-1.10.18/datatables.min.js"></script>
+</body>
+</html>

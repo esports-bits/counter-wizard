@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Counter Wizard</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+</head>
+<body>
+<div class="container mt-5">
+    <h1 class="display-3">Counter wizard
+    <small class="text-muted">by davidherasp</small></h1>
+    {% from "_formhelpers.html" import render_field %}
+    <form method=post>
+        <dl>
+            <div class="form-group w-50">
+                {{ render_field(form.name, class="form-control") }}
+            </div>
+            <div class="form-group w-25">
+                {{ render_field(form.region, class="form-control") }}
+            </div>
+            <div class="form-group w-25">
+                {{ render_field(form.champion, class="form-control") }}
+            </div>
+            <div class="form-group w-25">
+                {{ render_field(form.position, class="form-control") }}
+            </div>
+        </dl>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+</body>
+</html>
